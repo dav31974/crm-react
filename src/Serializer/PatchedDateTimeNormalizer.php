@@ -121,10 +121,11 @@ class PatchedDateTimeNormalizer implements NormalizerInterface, DenormalizerInte
         try {
             return \DateTime::class === $type ? new \DateTime($data, $timezone) : new \DateTimeImmutable($data, $timezone);
         } catch (\Exception $e) {
-
+            // condition rajoutée (patch)
             if($context['disable_type_enforcement'] ?? false) {
                 return $data;
             }
+            // fin condition
 
             throw new NotNormalizableValueException($e->getMessage(), $e->getCode(), $e);
         }
