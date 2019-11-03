@@ -1,6 +1,11 @@
 // Les imports importants
 import React from 'react';
 import ReactDom from "react-dom";
+import Navbar from './components/Navbar';
+import HomePage from './pages/Homepage';
+import { HashRouter, Switch, Route } from "react-router-dom"
+import CustomersPage from './pages/CustomersPage';
+import CustomersPageWithPagination from './pages/CustomersPageWithPagination';
 /*
  * Welcome to your app's main JavaScript file!
  *
@@ -17,8 +22,19 @@ require('../css/app.css');
 console.log('Hello World and Encore! Edit me in assets/js/app.js');
 
 const App = () => {
-    return <h1>Bonjour à tous</h1>;
-}
+    return (
+        <HashRouter>
+            <Navbar />
+
+            <main className="container pt-5">
+                <Switch>
+                    <Route path="/customers" component={CustomersPage} />
+                    <Route path="/" component={HomePage} />
+                </Switch>
+            </main>
+        </HashRouter>
+    );
+};
 
 const rootElement = document.querySelector('#app');
 ReactDom.render(<App />, rootElement);
