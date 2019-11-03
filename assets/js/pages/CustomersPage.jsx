@@ -6,6 +6,7 @@ const CustomersPage = (props) => {
 
     const [customers, setCustomers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
+    const [search, setSearch] = useState("");
 
     useEffect(() => {
         axios
@@ -14,6 +15,8 @@ const CustomersPage = (props) => {
             .then(data => setCustomers(data))
             .catch(error => console.log(error.response));
     }, []);
+
+    // fonctions ----------
 
     const handleDelete = id => {
 
@@ -33,13 +36,36 @@ const CustomersPage = (props) => {
         setCurrentPage(page);
     }
 
-    // reglage du composant Pgination
+    const handleSearch = event => {
+        const value = event.currentTarget.value;
+        setSearch(value);
+        setCurrentPage(1);
+    }
+
+    // fin fonctions ---------
+
+    // reglage 
     const itemsPerPage = 10;
-    const paginatedCustomers = Pagination.getData(customers, currentPage, itemsPerPage);
+
+    const filteredCustomers = customers.filter(
+        c =>
+         c.firstName.toLowerCase().includes(search.toLowerCase()) || 
+         c.lastName.toLowerCase().includes(search.toLowerCase()) || 
+         c.email.toLowerCase().includes(search.toLowerCase()) ||
+         (c.company && c.company.toLowerCase().includes(search.toLowerCase()))
+    );
+
+    const paginatedCustomers = Pagination.getData(filteredCustomers, currentPage, itemsPerPage);
+
+    // fin réglage
 
     return ( 
         <>
             <h1>Liste des clients</h1>
+
+            <div className="form-group">
+                <input type="text" onChange={handleSearch} value={search} className="form-control" placeholder="Rechercher..."/>
+            </div>
 
             <table className="table table-hover">
                 <thead>
@@ -80,9 +106,15 @@ const CustomersPage = (props) => {
 
             </table>
 
-            <Pagination currentPage={currentPage} itemsPerPage={itemsPerPage} length={customers.length} onPageChanged={handlePageChange} />
+            {itemsPerPage < filteredCustomers.length && (
+             <Pagination
+                currentPage={currentPage} 
+                itemsPerPage={itemsPerPage} 
+                length={filteredCustomers.length} 
+                onPageChanged={handlePageChange} 
+             />
+             )}
 
-            
 
         </>
     );
