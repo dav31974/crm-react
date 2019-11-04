@@ -51,7 +51,7 @@ const CustomersPage = (props) => {
 
     // fin fonctions ---------
 
-    // reglage 
+    // reglage du nombre d'item par page
     const itemsPerPage = 10;
 
     // filtrage des customers en fonction de la recherche

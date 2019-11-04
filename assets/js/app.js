@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import HomePage from './pages/Homepage';
 import { HashRouter, Switch, Route } from "react-router-dom"
 import CustomersPage from './pages/CustomersPage';
+import InvoicesPage from './pages/invoicesPage';
 import CustomersPageWithPagination from './pages/CustomersPageWithPagination';
 /*
  * Welcome to your app's main JavaScript file!
@@ -29,6 +30,7 @@ const App = () => {
             <main className="container pt-5">
                 <Switch>
                     <Route path="/customers" component={CustomersPage} />
+                    <Route path="/invoices" component={InvoicesPage} />
                     <Route path="/" component={HomePage} />
                 </Switch>
             </main>
