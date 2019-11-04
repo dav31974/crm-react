@@ -1,12 +1,12 @@
 // Les imports importants
 import React from 'react';
 import ReactDom from "react-dom";
+import { HashRouter, Route, Switch } from "react-router-dom";
 import Navbar from './components/Navbar';
-import HomePage from './pages/Homepage';
-import { HashRouter, Switch, Route } from "react-router-dom"
 import CustomersPage from './pages/CustomersPage';
+import HomePage from './pages/Homepage';
 import InvoicesPage from './pages/invoicesPage';
-import CustomersPageWithPagination from './pages/CustomersPageWithPagination';
+import LoginPage from './pages/LoginPage';
 /*
  * Welcome to your app's main JavaScript file!
  *
@@ -30,6 +30,7 @@ const App = () => {
             <main className="container pt-5">
                 <Switch>
                     <Route path="/customers" component={CustomersPage} />
+                    <Route path="/login" component={LoginPage} />
                     <Route path="/invoices" component={InvoicesPage} />
                     <Route path="/" component={HomePage} />
                 </Switch>
