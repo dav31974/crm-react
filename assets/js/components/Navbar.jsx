@@ -2,10 +2,12 @@ import React from 'react';
 import AuthAPI from '../services/authAPI';
 import { NavLink } from "react-router-dom";
 
-const Navbar = (props) => {
+const Navbar = ({ isAuthenticated, onLogout, history }) => {
 
     const handleLogout = () => {
         AuthAPI.logout();
+        onLogout(false);
+        history.push("/login");
     }
 
     return ( 
@@ -25,17 +27,23 @@ const Navbar = (props) => {
                     </li>
                 </ul>
                 <ul className="navbar-nav ml-auto">
-                    <li className="nav-item">
+                    {!isAuthenticated && <>
+                        <li className="nav-item">
                         <NavLink to="/register" className="nav-link">Inscription</NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink to="/login" className="btn btn-success">Connexion</NavLink>
-                    </li>
-                    <li className="nav-item">
+                        </li>
+                        <li className="nav-item">
+                            <NavLink to="/login" className="btn btn-success">Connexion</NavLink>
+                        </li>
+                    </> ||
+                     <>
+                     <li className="nav-item">
                         <button onClick={handleLogout} className="btn btn-danger">
                             Déconnexion
                         </button>
                     </li>
+                     </>}
+                    
+                    
                 </ul>
             </div>
         </nav> 

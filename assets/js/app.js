@@ -1,7 +1,7 @@
 // Les imports importants
-import React from 'react';
+import React, {useState} from 'react';
 import ReactDom from "react-dom";
-import { HashRouter, Route, Switch } from "react-router-dom";
+import { HashRouter, Route, Switch, withRouter, Redirect } from "react-router-dom";
 import Navbar from './components/Navbar';
 import CustomersPage from './pages/CustomersPage';
 import HomePage from './pages/Homepage';
@@ -20,21 +20,39 @@ require('../css/app.css');
 
 AuthAPI.setup();
 
+const PrivateRoute = ({path, isAuthenticated, component}) => {
+    return isAuthenticated ? <Route path={path} component={component} /> : <Redirect to="/login" />
+}
+
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 // const $ = require('jquery');
 
 console.log('Hello World and Encore! Edit me in assets/js/app.js');
 
 const App = () => {
+
+    const [isAuthenticated, setIsAuthenticated] = useState(AuthAPI.isAuthenticated());
+
+
+    // permet d'avoir les memes fonctionalité que les routes sur le composant navbar pour permettre la methode history pour le logout
+    const NavbarWithRouter = withRouter(Navbar);
+
     return (
         <HashRouter>
-            <Navbar />
+            <NavbarWithRouter isAuthenticated={isAuthenticated} onLogout={setIsAuthenticated} />
 
             <main className="container pt-5">
                 <Switch>
-                    <Route path="/customers" component={CustomersPage} />
-                    <Route path="/login" component={LoginPage} />
-                    <Route path="/invoices" component={InvoicesPage} />
+                    <PrivateRoute path="/customers" isAuthenticated={isAuthenticated} component={CustomersPage} />
+                    <Route
+                        path="/login" 
+                        render={props => (
+                            <LoginPage
+                                onLogin={setIsAuthenticated} {...props}
+                            />
+                        )}
+                     />
+                    <PrivateRoute path="/invoices" isAuthenticated={isAuthenticated} component={InvoicesPage} />
                     <Route path="/" component={HomePage} />
                 </Switch>
             </main>

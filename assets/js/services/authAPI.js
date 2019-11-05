@@ -30,8 +30,23 @@ function setup() {
     }
 }
 
+function isAuthenticated() {
+    // verifie si un tohen existe
+    const token = window.localStorage.getItem("authToken");
+    // si le token est valide
+    if (token) {
+        const jwtData = jwtDecode(token);
+        if (jwtData.exp * 1000 > new Date().getTime()){
+            return true;
+        }
+        return false;
+    }
+    return false;
+}
+
 export default {
     authenticate,
     logout,
-    setup
+    setup,
+    isAuthenticated
 };
