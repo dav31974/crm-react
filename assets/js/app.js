@@ -7,6 +7,7 @@ import CustomersPage from './pages/CustomersPage';
 import HomePage from './pages/Homepage';
 import InvoicesPage from './pages/invoicesPage';
 import LoginPage from './pages/LoginPage';
+import AuthAPI from "./services/authAPI";
 /*
  * Welcome to your app's main JavaScript file!
  *
@@ -16,6 +17,8 @@ import LoginPage from './pages/LoginPage';
 
 // any CSS you require will output into a single css file (app.css in this case)
 require('../css/app.css');
+
+AuthAPI.setup();
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 // const $ = require('jquery');

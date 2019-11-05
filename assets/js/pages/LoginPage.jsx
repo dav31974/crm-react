@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import axios from "axios";
+import AuthAPI from '../services/authAPI';
 
 const LoginPage = (props) => {
     const [credentials, setCredentials] = useState({
@@ -9,6 +9,7 @@ const LoginPage = (props) => {
 
     const [errorMess, setErrorMess] = useState("");
 
+    // Gestion des champs
     const handleChange = async (event) => {
         const value = event.currentTarget.value;
         const name = event.currentTarget.name;
@@ -16,19 +17,13 @@ const LoginPage = (props) => {
         setCredentials({ ...credentials, [name]: value});
     }
 
+    // Gestion du submit
     const handleSubmit = async event => {
         event.preventDefault();
 
         try {
-            const token = await axios
-                .post("http://127.0.0.1:8000/api/login_check", credentials)
-                .then(response => response.data.token);
+            await AuthAPI.authenticate(credentials);
             setErrorMess("");
-
-            // stocke le token dans le localStorage
-            window.localStorage.setItem("authToken", token);
-            // Prévient Axios qu'on a un header par defaut sur toutes nos futures requetes http
-            axios.defaults.headers["Authorization"] = "Bearer " + token;
         } catch (error) {
             setErrorMess("Aucun compte ne possède cette adresse email ou les informations ne correspondent pas ");
         }
