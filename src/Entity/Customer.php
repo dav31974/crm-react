@@ -41,7 +41,7 @@ class Customer
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"customers_read", "invoices_read"})
-     * @Assert\NotBlank(message="le prénom du customer est obligatoire")
+     * @Assert\NotBlank(message="le prénom du client est obligatoire")
      * @Assert\Length(min=3, max=255, minMessage="Le prénom doit faire entre 3 et 255 caractères", maxMessage="Le prénom doit faire entre 3 et 255 caractères")
      */
     private $firstName;
@@ -49,7 +49,7 @@ class Customer
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"customers_read", "invoices_read"})
-     * @Assert\NotBlank(message="le nom du customer est obligatoire")
+     * @Assert\NotBlank(message="le nom du client est obligatoire")
      * @Assert\Length(min=3, max=255, minMessage="Le nom doit faire entre 3 et 255 caractères", maxMessage="Le nom doit faire entre 3 et 255 caractères")
      */
     private $lastName;
@@ -57,7 +57,7 @@ class Customer
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"customers_read", "invoices_read"})
-     * @Assert\NotBlank(message="l'adresse email du customer est obligatoire")
+     * @Assert\NotBlank(message="l'adresse email du client est obligatoire")
      * @Assert\Email(message="Le format de l'adresse email doit etre valide")
      */
     private $email;
