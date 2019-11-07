@@ -1,9 +1,13 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Field from '../components/forms/Field';
 import { Link } from 'react-router-dom';
-import axios from "axios";
+import CustomersAPI from "../services/customersAPI";
 
-const CustomerPage = (props) => {
+const CustomerPage = ({ match, history }) => {
+
+        // récupération de l'id dans le cas d'une modification d'un customer
+        const { id = "new" } = match.params;
+
 
         const [customer, setCustomer] = useState({
             lastName: "",
@@ -19,31 +23,59 @@ const CustomerPage = (props) => {
             company: ""
         })
 
+        const [editing, setEditing] = useState(false);
+
+        // Récupération du customer en fonction de l'identifiant
+        const fetchCustomer = async id => {
+            try {
+                const { firstName, lastName, email, company } = await CustomersAPI.find(id);
+                setCustomer({ firstName, lastName, email, company });
+            } catch (error) {
+                history.replace('/customers');
+            }
+            
+        }
+ 
+        // Chargement du customer si besoin au chargement du composant ou au changement de l'identifiant
+        useEffect(() => {
+            if (id !== "new") {
+                setEditing(true);
+                fetchCustomer(id);
+            }
+        }, [id]);
+
+        // Gestion des changements des inputs dans le formulaire
         const handleChange = ({currentTarget}) => {
             const { name, value } = currentTarget;
             setCustomer({ ...customer, [name]: value });
         };
-
+ 
+        // Gestion de la soumission du formulaire
         const handleSubmit = async (event) => {
             event.preventDefault();
-
             try {
-                const response = await axios.post("http://127.0.0.1:8000/api/customers", customer);
+
+                if(editing) {
+                    await CustomersAPI.update(id, customer);
+                } else {
+                    await CustomersAPI.create(customer);
+                    history.replace("/customers");
+                }
                 setErrors({});
-            } catch (error) {
-                if (error.response.data.violations) {
+            } catch ({ response }) {
+                const { violations } = response.data;
+                if (violations) {
                     const apiErrors = {};
-                    error.response.data.violations.map(violation => {
-                        apiErrors[violation.propertyPath] = violation.message;
+                    violations.map(({ propertyPath, message }) => {
+                        apiErrors[propertyPath] = message;
                     });
                     setErrors(apiErrors);
-
                 }
             }
         }
 
     return ( <>
-        <h1>Création d'un cient</h1>
+        {!editing && <h1>Création d'un cient</h1> || <h1>Modification du client</h1> }
 
         <form onSubmit={handleSubmit}>
             <Field
