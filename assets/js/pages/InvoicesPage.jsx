@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Pagination from '../components/Pagination';
 import InvoicesAPI from '../services/invoicesAPI';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 
 const STATUS_CLASSES = {
     PAID: "success",
@@ -82,7 +83,11 @@ const InvoicesPage = (props) => {
 
     return ( 
         <>
-            <h1>Liste des factures</h1>
+            <div className="d-flex justify-content-between align-items-center mb-3">
+                <h1>Liste des factures</h1>
+                <Link className="btn btn-primary" to="/invoices/new">Créer Une Facture</Link>
+            </div>
+            
 
             <div className="form-group">
                 <input type="text" onChange={handleSearch} value={search} className="form-control" placeholder="Rechercher..."/>
@@ -107,10 +112,10 @@ const InvoicesPage = (props) => {
                             <td>{invoice.chrono}</td>
                             <td>{invoice.customer.firstName} {invoice.customer.lastName}</td>
                             <td className="text-center">{formatDate(invoice.sentAt)}</td>
-                            <td className="text-center">{invoice.amount.toLocaleString()}</td>
+                            <td className="text-center">{invoice.amount.toLocaleString()} &euro;</td>
                             <td className="text-center"><span className={"badge badge-" + STATUS_CLASSES[invoice.status]}>{STATUS_LABELS[invoice.status]}</span></td>
                             <td>
-                                <button className="btn btn-sm btn-primary mr-1">Editer</button>
+                                <Link to={"/invoices/" + invoice.id} className="btn btn-sm btn-primary mr-1">Editer</Link>
                                 <button onClick={() => handleDelete(invoice.id)} className="btn btn-sm btn-danger">Supprimer</button>
                             </td>
                         </tr>

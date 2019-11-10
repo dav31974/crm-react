@@ -12,7 +12,7 @@ const LoginPage = ({ history }) => {
 
     const [errorMess, setErrorMess] = useState("");
 
-    // Gestion des champs
+    // Gestion des changements des imputs dans le formulaire
     const handleChange = async (event) => {
         const value = event.currentTarget.value;
         const name = event.currentTarget.name;
