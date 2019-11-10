@@ -13,6 +13,8 @@ import AuthAPI from "./services/authAPI";
 import CustomerPage from './pages/CustomerPage';
 import InvoicePage from './pages/InvoicePage';
 import RegisterPage from './pages/RegisterPage';
+import { ToastContainer, toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 
 require('../css/app.css');
@@ -45,11 +47,11 @@ const App = () => {
                         <PrivateRoute path="/customers" component={CustomersPage} /> 
                         <PrivateRoute path="/invoices/:id" component={InvoicePage} />                      
                         <PrivateRoute path="/invoices" component={InvoicesPage} />
-                        <Route path="/" component={HomePage} />
-                        
+                        <Route path="/" component={HomePage} />                        
                     </Switch>
                 </main>
             </HashRouter>
+            <ToastContainer position={toast.POSITION.BOTTOM_LEFT} />
         </AuthContext.Provider>
     );
 };

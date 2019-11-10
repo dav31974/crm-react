@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import Field from '../components/forms/Field';
 import { Link } from 'react-router-dom';
 import CustomersAPI from "../services/customersAPI";
+import { toast } from 'react-toastify';
+import FormContentLoader from '../components/loaders/FormContentLoader';
 
 const CustomerPage = ({ match, history }) => {
 
@@ -23,6 +25,8 @@ const CustomerPage = ({ match, history }) => {
             company: ""
         })
 
+        const [loading, setLoading] = useState(false);
+
         const [editing, setEditing] = useState(false);
 
         // Récupération du customer en fonction de l'identifiant
@@ -30,7 +34,9 @@ const CustomerPage = ({ match, history }) => {
             try {
                 const { firstName, lastName, email, company } = await CustomersAPI.find(id);
                 setCustomer({ firstName, lastName, email, company });
+                setLoading(false);
             } catch (error) {
+                toast.error("Le client n'a pas pu être chargé")
                 history.replace('/customers');
             }
             
@@ -39,6 +45,7 @@ const CustomerPage = ({ match, history }) => {
         // Chargement du customer si besoin au chargement du composant ou au changement de l'identifiant
         useEffect(() => {
             if (id !== "new") {
+                setLoading(true);
                 setEditing(true);
                 fetchCustomer(id);
             }
@@ -54,14 +61,15 @@ const CustomerPage = ({ match, history }) => {
         const handleSubmit = async (event) => {
             event.preventDefault();
             try {
-
+                setErrors({});
                 if(editing) {
                     await CustomersAPI.update(id, customer);
+                    toast.success("Le client a bien été modifié !");
                 } else {
                     await CustomersAPI.create(customer);
+                    toast.success("Le client a bien été créé !");
                     history.replace("/customers");
                 }
-                setErrors({});
             } catch ({ response }) {
                 const { violations } = response.data;
                 if (violations) {
@@ -70,13 +78,15 @@ const CustomerPage = ({ match, history }) => {
                         apiErrors[propertyPath] = message;
                     });
                     setErrors(apiErrors);
+                    toast.error("Des erreurs dans votre formulaire !");
                 }
             }
         }
 
     return ( <>
         {!editing && <h1>Création d'un cient</h1> || <h1>Modification du client</h1> }
-
+        {loading && <FormContentLoader />}
+        {!loading && (
         <form onSubmit={handleSubmit}>
             <Field
               label="Nom de famille"
@@ -116,7 +126,8 @@ const CustomerPage = ({ match, history }) => {
                 <button type="submit" className="btn btn-success">Enregistrer</button>
                 <Link to="/customers" className="btn btn-link">Retour à la liste</Link>
             </div>
-        </form>
+        </form> 
+        )}
 
     </> );
 }
