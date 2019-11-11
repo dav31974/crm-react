@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 const HomePage = (props) => {
     return ( <>
@@ -9,7 +8,7 @@ const HomePage = (props) => {
             <hr className="my-4" />
             <p>Une interface fluide et dynamique vous attends pour la gestion de vos clients :)</p>
             <p className="lead">
-                <Link to="/register" className="btn btn-primary btn-lg" href="#" role="button">Découvrir</Link>
+                <a className="btn btn-primary btn-lg" href="#" role="button">Découvrir</a>
             </p>
         </div> 
         </>

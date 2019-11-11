@@ -1,4 +1,6 @@
 {
+    "name":"fluidcrm",
+    "description":"project symfony react",
     "type": "project",
     "license": "proprietary",
     "require": {
