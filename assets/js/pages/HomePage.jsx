@@ -8,9 +8,6 @@ const HomePage = (props) => {
             <hr className="my-4" />
             <p>Créer un compte ou connectez vous avec les identifiants de test: <br/>Adresse email: ericd@gmail.com <br/>Mot de passe: passtest</p>
             <p>Une interface fluide et dynamique vous attends pour la gestion de vos clients :)</p>
-            <p className="lead">
-                <a className="btn btn-primary btn-lg" href="#" role="button">Découvrir</a>
-            </p>
         </div> 
         </>
     );
